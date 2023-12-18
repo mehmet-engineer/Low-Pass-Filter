@@ -1,15 +1,8 @@
-# Low-Pass-Filter
-Low Pass Filter Class in C++
-
-*Author: Mehmet Kahraman / Date 18.12.2023*
-
-Usage:
---
-```
 #include <low_pass_filter.hpp>
 
 int main(int argc, char** argv) 
 {
+
     // initialize
     low_pass_filter lp_filter;
 
@@ -23,4 +16,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-```
