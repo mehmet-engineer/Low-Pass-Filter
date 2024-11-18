@@ -1,7 +1,7 @@
-# N-dim-Low-Pass-Filter
+# Low-Pass-Filter
 Multi Dimensional Low Pass Filter in C++
 
-**Authors: Mehmet KAHRAMAN / Date: 09.02.2024**
+**Authors: Mehmet KAHRAMAN / Date: 18.11.2024**
 
 Installation:
 ---
@@ -13,15 +13,17 @@ sudo apt install libeigen3-dev
 Example Usage:
 ---
 ```
-int filter_size = 3;
-double smoothness = 0.02;
-low_pass_filter lp_filter(filter_size, smoothness);
+low_pass_filter lp_filter;
 
-lp_filter.set_smoothness(smoothness);
+int filter_size = 3;
+double smoothness = 0.2;
+lp_filter.initialize_filter(filter_size, smoothness);
 lp_filter.set_initial_value(0.0);
 
-Eigen::VectorXd data = Eigen::VectorXd::Random(filter_size);
+Eigen::VectorXd vector_data(3);
+vector_data << 1.0, 2.0, 3.0;
+std::cout << "vector_data: " << vector_data.transpose() << "\n" << std::endl;
 
-Eigen::VectorXd filtered_data = lp_filter.apply_filter(data);
-std::cout << "filtered_data: \n" << filtered_data << "\n";
+Eigen::VectorXd filtered_vector = lp_filter.apply_filter(vector_data);
+std::cout << "filtered_vector: " << filtered_vector.transpose() << "\n" << std::endl;
 ```
