@@ -1,29 +1,20 @@
-#include "low_pass_filter.hpp"
-#include <Eigen/Dense>
-#include <thread>
-#include <chrono>
+#include <low_pass_filter.hpp>
 
 int main(int argc, char** argv) 
 {
+    low_pass_filter lp_filter;
 
     int filter_size = 3;
-    double smoothness = 0.02;
-    low_pass_filter lp_filter(filter_size, smoothness);
-
-    lp_filter.set_smoothness(smoothness);
+    double smoothness = 0.2;
+    lp_filter.initialize_filter(filter_size, smoothness);
     lp_filter.set_initial_value(0.0);
 
-    while(true) 
-    {   
-        std::cout << "---------------------- \n" << std::endl;
+    Eigen::VectorXd vector_data(3);
+    vector_data << 1.0, 2.0, 3.0;
+    std::cout << "vector_data: " << vector_data.transpose() << "\n" << std::endl;
 
-        Eigen::VectorXd data = Eigen::VectorXd::Random(filter_size);
-        std::cout << "data: \n" << data << "\n" << std::endl;
+    Eigen::VectorXd filtered_vector = lp_filter.apply_filter(vector_data);
+    std::cout << "filtered_vector: " << filtered_vector.transpose() << "\n" << std::endl;
 
-        Eigen::VectorXd filtered_data = lp_filter.apply_filter(data);
-        std::cout << "filtered_data: \n" << filtered_data << "\n" << std::endl;
-        
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    }
-
+    return 0;
 }

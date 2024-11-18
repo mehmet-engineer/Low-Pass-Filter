@@ -1,17 +1,32 @@
-#include <dynamics_tool_pkg/low_pass_filter.hpp>
+#include <low_pass_filter.hpp>
+
+// CONSTRUCTOR
+LowPassFilter::LowPassFilter()
+{   
+    
+}
 
 /**
- * @author: Mehmet Kahraman
- * @date: 09.02.2024
-*/
-
+ * @brief initializes filter with filter size and smoothness values
+ * @param filter_size filter size (number of vector elements)
+ * @param smoothness smoothness value from 0.0 to 1.0, if smoothness is 1.0, filter does not effect.
+ * @return None (void)
+*/ 
+void LowPassFilter::initialize_filter(int filter_size, double smoothness)
+{
+    this->filter_size = filter_size;
+    smoothness_vector = Eigen::VectorXd::Constant(filter_size, smoothness);
+    prev_data_vector = Eigen::VectorXd::Zero(filter_size);
+    filtered_vector = Eigen::VectorXd::Zero(filter_size);
+    ones_vector = Eigen::VectorXd::Ones(filter_size);
+}
 
 /**
  * @brief set smoothness value for all filter elements, if smoothness is 1.0, filter does not effect.
  * @param smoothness smoothness value from 0.0 to 1.0
- * @return None
+ * @return None (void)
 */ 
-void low_pass_filter::set_smoothness(double smoothness)
+void LowPassFilter::set_smoothness(double smoothness)
 {
     smoothness_vector = Eigen::VectorXd::Constant(filter_size, smoothness);
 }
@@ -19,9 +34,9 @@ void low_pass_filter::set_smoothness(double smoothness)
 /**
  * @brief set initial value for all filter elements.
  * @param init_value initialization value for first filter result
- * @return None
+ * @return None (void)
 */ 
-void low_pass_filter::set_initial_value(double init_value) 
+void LowPassFilter::set_initial_value(double init_value) 
 {
     prev_data_vector = Eigen::VectorXd::Constant(filter_size, init_value);
 }
@@ -31,9 +46,8 @@ void low_pass_filter::set_initial_value(double init_value)
  * @param current_vector current data vector to be filtered
  * @return filtered vector
 */ 
-Eigen::VectorXd low_pass_filter::apply_filter(Eigen::VectorXd &current_vector) 
+Eigen::VectorXd LowPassFilter::apply_filter(Eigen::VectorXd &current_vector) 
 {
-
     // assume that smoothness is 0.2
     // get %80 of previous data and get %20 of current data
     for(int i = 0; i < filter_size; i++)
